@@ -11,3 +11,9 @@ To play the game..
 
 ## How to run
 To run the game..
+
+## Branches
+The branch original_code contains the given code for this assignment.
+
+## Documents
+The docs folder contains some files that explains the rules of the game and also the instructions for this assignment.
