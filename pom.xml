@@ -22,7 +22,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <mainClass>com.linseb9.Apples2Apples</mainClass>
+                    <mainClass>com.linseb9.Server</mainClass>
                 </configuration>
             </plugin>
         </plugins>
