@@ -1,13 +1,13 @@
 # Apples2Apples
 
-This is an event-driven textbased implimentation of the board game **Apples to Apples.**
+This is an event-driven textbased implimentation of the board game **Apples to Apples.** 
 
 ## Overview
 This version of **Apples to Apples** is completly textbased and is played using a terminal.
 It can be played as single player versus bots and/or versus other people on the local network.
 
 ## How to play
-To play the game..
+The game works exactly like the real board game **Apples to Apples**. More information can be found in the docs folder.
 
 ## How to run
-To run the game..
+The game has been created using Maven. It can be run from an IDE by typing "mvn compile exec:java@run-apples2apples" in a terminal. This will start the gameserver. To connect with a client first open a new terminal and then type "mvn exec:java@run-client".
