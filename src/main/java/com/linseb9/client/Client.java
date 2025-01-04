@@ -1,12 +1,11 @@
 package com.linseb9.client;
 
-import com.linseb9.game.GameAction;
-import com.linseb9.game.GameEvent;
+import com.linseb9.game.actions.GameAction;
+import com.linseb9.game.events.GameEvent;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 
 public class Client {
@@ -14,7 +13,6 @@ public class Client {
     private BufferedReader userInput = null;
     private DataOutputStream outString = null;
     private ObjectOutputStream out = null;
-    //private DataInputStream in = null;
     private ObjectInputStream in = null;
     private GameAction action;
 
@@ -29,7 +27,6 @@ public class Client {
             outString = new DataOutputStream(socket.getOutputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             // read data via socket
-            //in = new DataInputStream(socket.getInputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
             System.out.println("Connected to gameserver...");
@@ -51,13 +48,13 @@ public class Client {
         }
 
     }
-
+    // Receive events from the game throught event dispatcher
     private void eventReceiver() {
         boolean run = true;
         try{
             while(run) {
                 GameEvent event = (GameEvent) in.readObject();
-                System.out.println("Event recieved at client: " + event.getMessage());
+                System.out.println("Game: " + event.getMessage());
             }
         }
         catch(IOException io) {
@@ -77,14 +74,17 @@ public class Client {
     private void gameActionTransmitter () {
         // string to read message from user
         String input = "";
+
         try {
+            GameAction action = new GameAction("JOINED GAME");
+            out.writeObject(action);
             while (!input.equals("Exit")) {
                 input = userInput.readLine();
                 if (!verifyInput(input)){
                     System.out.println("Enter a valid digit");
                     continue;
                 }
-                GameAction action = new GameAction(input);
+                action = new GameAction(input);
                 out.writeObject(action);
                 //out.writeUTF(line);
             }

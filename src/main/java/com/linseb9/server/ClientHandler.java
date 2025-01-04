@@ -1,12 +1,10 @@
 package com.linseb9.server;
 
-import com.linseb9.game.EventDispatcher;
-import com.linseb9.game.Game;
-import com.linseb9.game.GameAction;
-import com.linseb9.game.Player;
+import com.linseb9.game.events.EventDispatcher;
+import com.linseb9.game.core.Game;
+import com.linseb9.game.actions.GameAction;
+import com.linseb9.game.players.Player;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -15,23 +13,20 @@ import java.util.EventObject;
 public class ClientHandler implements Runnable {
     private EventDispatcher dispatcher;
     private Socket clientSocket;
-    //private DataInputStream dataIn;
     private ObjectInputStream dataIn = null;
-    //private DataOutputStream dataOut;
     private ObjectOutputStream dataOut = null;
     private Game game;
     private Player player;
 
     public ClientHandler(Socket socket, EventDispatcher dispatcher, Game game, int playerId) {
         this.player = new Player(playerId);
+        this.game = game;
+        this.dispatcher = dispatcher;
+        this.clientSocket = socket;
+        game.addPlayers(this.player);
 
         try{
-            this.game = game;
-            this.dispatcher = dispatcher;
-            this.clientSocket = socket;
-            //this.dataOut = new DataOutputStream(clientSocket.getOutputStream());
             this.dataOut = new ObjectOutputStream(clientSocket.getOutputStream());
-            //this.dataIn = new DataInputStream(clientSocket.getInputStream());
             this.dataIn = new ObjectInputStream(clientSocket.getInputStream());
         }
         catch (Exception e) {
@@ -47,8 +42,6 @@ public class ClientHandler implements Runnable {
             while(true) {
                 // Read from client
                 GameAction action = (GameAction) dataIn.readObject();
-                //String message = dataIn.readUTF();
-                //System.out.println("Player:" + message);
                 dispatcher.dispatchAction(action, player);
             }
         }
@@ -57,7 +50,7 @@ public class ClientHandler implements Runnable {
             System.exit(1);
         }
     }
-
+    // Forward to the clients
     public void forwardMessage(EventObject event) {
         try{
             // Send data to client

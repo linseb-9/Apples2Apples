@@ -46,7 +46,7 @@
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.linseb9.game.CardBuilder</mainClass>
+                            <mainClass>com.linseb9.game.cards.CardBuilder</mainClass>
                         </configuration>
                     </execution>
                 </executions>

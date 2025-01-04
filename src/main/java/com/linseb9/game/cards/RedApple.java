@@ -1,6 +1,6 @@
-package com.linseb9.game;
+package com.linseb9.game.cards;
 
-public class RedApple implements Card{
+public class RedApple implements Card {
     private String title;
     private String description;
 

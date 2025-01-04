@@ -1,7 +1,7 @@
 package com.linseb9;
 
-import com.linseb9.game.EventDispatcher;
-import com.linseb9.game.Game;
+import com.linseb9.game.events.EventDispatcher;
+import com.linseb9.game.core.Game;
 import com.linseb9.server.Server;
 
 import java.util.*;

@@ -1,14 +1,15 @@
-package com.linseb9.game;
+package com.linseb9.game.events;
 
-import com.linseb9.client.Client;
+import com.linseb9.game.actions.GameAction;
+import com.linseb9.game.players.Player;
+import com.linseb9.game.core.Game;
 import com.linseb9.server.ClientHandler;
-import com.linseb9.server.Server;
 
 import java.util.ArrayList;
 
 public class EventDispatcher implements GameEventListener {
     //private final Server server;
-    private Game game;
+    private final Game game;
     private final ArrayList<ClientHandler> clients;
 
 
@@ -22,7 +23,7 @@ public class EventDispatcher implements GameEventListener {
         for (ClientHandler client: clients) {
                 client.forwardMessage(event);
         }
-        System.out.println("Event is " + event.getName());
+        System.out.println("Event: " + event.getMessage());
     }
 
     public void dispatchAction(GameAction action, Player sender) {
