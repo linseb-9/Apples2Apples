@@ -1,4 +1,4 @@
-package com.linseb9.game;
+package com.linseb9.game.actions;
 
 import java.io.Serializable;
 

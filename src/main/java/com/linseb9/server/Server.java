@@ -1,7 +1,7 @@
 package com.linseb9.server;
 
-import com.linseb9.game.EventDispatcher;
-import com.linseb9.game.Game;
+import com.linseb9.game.events.EventDispatcher;
+import com.linseb9.game.core.Game;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -18,9 +18,6 @@ public class Server {
     public Server(int port, EventDispatcher dispatcher, Game game) {
         try {
             clients = new ArrayList<ClientHandler>();
-            // Initialize the game and dispatcher
-            //Game game = new Game();
-            //game.initialize(2, 1); // Example: 2 players, 1 bot
             this.dispatcher = dispatcher;
             this.game = game;
 
@@ -46,18 +43,6 @@ public class Server {
             System.err.println("Server error: " + e.getMessage());
         }
     }
-
-    /*private void broadcastMessage(String message) {
-        for (ClientHandler client: clients) {
-            client.forwardMessage(message);
-        }
-    }
-
-    private void sendMessage(String message, ClientHandler client) {
-        client.forwardMessage(message);
-    }
-    */
-
 
     public static void main(String[] args) {
         //new Server(1338);

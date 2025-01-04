@@ -1,4 +1,4 @@
-package com.linseb9.game;
+package com.linseb9.game.cards;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,6 +1,6 @@
-package com.linseb9.game;
+package com.linseb9.game.cards;
 
-public class GreenApple implements Card{
+public class GreenApple implements Card {
     private String characteristic;
     private String synonym;
 
