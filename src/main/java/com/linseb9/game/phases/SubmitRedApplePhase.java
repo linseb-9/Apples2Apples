@@ -1,14 +1,16 @@
 package com.linseb9.game.phases;
 
 import com.linseb9.game.actions.GameAction;
+import com.linseb9.game.cards.Card;
 import com.linseb9.game.core.Game;
 import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.players.Player;
+import com.linseb9.game.util.TerminalFormatting;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class SubmitRedApplePhase implements Phase{
-    private String name = "Submit Red Apple phase";
+    private String gameMessage = "Non judge players, please submit your red apple";
     private final ArrayList<Player> counter;
     private Boolean phaseComplete;
 
@@ -18,8 +20,8 @@ public class SubmitRedApplePhase implements Phase{
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getMessage() {
+        return gameMessage;
     }
 
     @Override
@@ -28,27 +30,37 @@ public class SubmitRedApplePhase implements Phase{
     }
 
     @Override
-    public GameEvent handle(Game game, GameAction action, Player player) {
-        if (action.getName().equals("A")) {
+    public void handle(Game game, GameAction action, Player player) {
+        TerminalFormatting tformat = new TerminalFormatting();
+        if (player.judge){
+            game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() +"You are the judge and cannot submit an apple" + tformat.getReset(), player));
+            return;
+        }
+        if (action.getName().equals("PLAY CARD")) {
             if (counter.contains(player)) {
-                return new GameEvent(this, action, "Waiting for all players to submit");
+                game.enqueueEvent(new GameEvent(this, action, tformat.getBlue() + "You have already submitted your card" + tformat.getReset(), player));
+                return;
             }
             else {
                 counter.add(player);
+                List<Map.Entry<Card, Player>> subbedRedApples = game.getSubmittedRedApples();
+                subbedRedApples.add(new AbstractMap.SimpleEntry<>(player.deck.remove(action.getCardNr()),player));
 
-                if (counter.size() == game.getTotalPlayers()) {
+                if (counter.size() == game.getTotalPlayers() - 1) {
                     phaseComplete = true;
-                    return new GameEvent(game, action, "Setup phase complete" );
+                    game.enqueueEvent(new GameEvent(game, action, "All players have submitted an apple", null));
+                    return;
                 }
-                return new GameEvent(game, action, "A player submitted a red apple" );
+                game.enqueueEvent(new GameEvent(game, action, "A player submitted a red apple", null));
+                return;
             }
         }
-        return new GameEvent(game, action, "Invalid action for this phase" );
+        game.enqueueEvent(new GameEvent(game, action, "Invalid action for this phase", null));
     }
 
     @Override
     public Phase nextPhase() {
-        return new PickWinnerPhase();
+        return new DisplayRedApplePhase();
     }
 
     @Override

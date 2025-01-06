@@ -7,11 +7,11 @@ import com.linseb9.game.players.Player;
 
 public interface Phase {
 
-    public String getName();
+    public String getMessage();
 
     public Boolean isAutonomous();
 
-    public GameEvent handle(Game game, GameAction action, Player player);
+    public void handle(Game game, GameAction action, Player player);
 
     public Phase nextPhase();
 

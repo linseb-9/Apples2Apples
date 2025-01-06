@@ -3,6 +3,7 @@ package com.linseb9.server;
 import com.linseb9.game.events.EventDispatcher;
 import com.linseb9.game.core.Game;
 import com.linseb9.game.actions.GameAction;
+import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.players.Player;
 
 import java.io.ObjectInputStream;
@@ -53,8 +54,12 @@ public class ClientHandler implements Runnable {
     // Forward to the clients
     public void forwardMessage(EventObject event) {
         try{
-            // Send data to client
-            dataOut.writeObject(event);
+            if (event instanceof GameEvent gameEvent) {
+                if (gameEvent.getTargetPlayer() == this.player || (gameEvent.getTargetPlayer() == null)) {
+                    // Send data to client
+                    dataOut.writeObject(event);
+                }
+            }
         }
         catch(Exception e) {
             System.out.println("Error while forwarding message: " + e);

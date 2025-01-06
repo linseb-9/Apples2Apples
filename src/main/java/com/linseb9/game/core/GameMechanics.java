@@ -36,7 +36,10 @@ public class GameMechanics {
                         System.out.println("No more red apples available");
                         return;
                     }
-                    player.deck.add(deck.remove(0));
+                    if (player.deck.size() < 7) {
+                        player.deck.add(deck.remove(0));
+                    }
+
                 }
                 numOfPlayerCards--;
             }

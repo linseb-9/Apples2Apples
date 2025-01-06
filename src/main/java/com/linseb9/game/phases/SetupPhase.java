@@ -4,11 +4,12 @@ import com.linseb9.game.actions.GameAction;
 import com.linseb9.game.core.Game;
 import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.players.Player;
+import com.linseb9.game.util.TerminalFormatting;
 
 import java.util.ArrayList;
 
 public class SetupPhase implements Phase{
-    private String name = "Setup Phase";
+    private String gameMessage = "Setting up game";
     private final ArrayList<Player> counter;
     private Boolean phaseComplete;
 
@@ -20,8 +21,8 @@ public class SetupPhase implements Phase{
 
 
     @Override
-    public String getName() {
-        return name;
+    public String getMessage() {
+        return gameMessage;
     }
 
     @Override
@@ -30,22 +31,29 @@ public class SetupPhase implements Phase{
     }
 
     @Override
-    public GameEvent handle(Game game, GameAction action, Player player) {
+    public void handle(Game game, GameAction action, Player player) {
+        TerminalFormatting tformat = new TerminalFormatting();
         if(action.getName().equals("JOINED GAME")) {
             if (counter.contains(player)) {
-                return new GameEvent(game, action, "Still waiting for players" );
+                game.enqueueEvent(new GameEvent(game, action, "Still waiting for players" , null));
+                return;
             }
             else {
                 counter.add(player);
 
                 if (counter.size() == game.getTotalPlayers()) {
                     phaseComplete = true;
-                    return new GameEvent(game, action, "Setup phase complete" );
+                    game.enqueueEvent(new GameEvent(game, action, "A new player joined the game, player: " + player.id, null));
+                    game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() + "Welcome, you are player " + player.id + tformat.getReset(), player));
+                    game.enqueueEvent(new GameEvent(game, action, "Setup phase complete", null));
+                    return;
                 }
-                return new GameEvent(game, action, "A new player joined the game" );
+                game.enqueueEvent(new GameEvent(game, action, "A new player joined the game, player: " + player.id, null));
+                game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() +"Welcome, you are player " + player.id + tformat.getReset(), player));
+                return;
             }
         }
-        return new GameEvent(game, action, "Invalid action for this phase" );
+        game.enqueueEvent(new GameEvent(game, action, "Invalid action for this phase", null ));
     }
 
     @Override

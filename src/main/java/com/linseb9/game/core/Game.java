@@ -9,8 +9,7 @@ import com.linseb9.game.phases.Phase;
 import com.linseb9.game.phases.SetupPhase;
 import com.linseb9.game.players.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Game {
     private int numOfPlayers;
@@ -23,9 +22,11 @@ public class Game {
     private CardBuilder cardBuilder;
     private ArrayList<Card> greenApples;
     private ArrayList<Card> redApples;
+    private List<Map.Entry<Card, Player>> submittedRedApples;
     private Rules rules;
     private Card currentGreenApple;
     private GameMechanics gameMechanics;
+    private Queue<GameEvent> eventQueue;
 
 
 
@@ -37,6 +38,7 @@ public class Game {
         this.gameCounter = 0;
         this.players = new ArrayList<Player>();
         this.gameMechanics = new GameMechanics();
+        this.submittedRedApples = new ArrayList<>();
         initializeGame();
     }
 
@@ -45,14 +47,15 @@ public class Game {
         cardBuilder = new CardBuilder();
         greenApples = cardBuilder.buildGreenApples();
         redApples = cardBuilder.buildRedApples();
-        gameMechanics.shuffleDeck(greenApples);
-        gameMechanics.shuffleDeck(redApples);
+        eventQueue = new LinkedList<>();
     }
 
 
     public void performAction(Player player, GameAction action) {
         // Process the action in the current phase
         processActionInPhase(player, action);
+
+        dispatchQueuedEvents();
 
         // Check if the phase is complete and transition if necessary
         while (currentPhase.isComplete()) {
@@ -62,23 +65,34 @@ public class Game {
             if (currentPhase.isAutonomous()) {
                 processAutonomousPhase();
             }
+
+            dispatchQueuedEvents();
         }
     }
 
     private void processActionInPhase(Player player, GameAction action) {
-        GameEvent event = currentPhase.handle(this, action, player);
-        notifyListeners(event);
+        currentPhase.handle(this, action, player);
     }
 
     private void transitionToNextPhase() {
         currentPhase = currentPhase.nextPhase();
-        GameEvent event = new GameEvent(this, null,  currentPhase.getName());
-        notifyListeners(event);
+        GameEvent event = new GameEvent(this, null,  currentPhase.getMessage(), null);
+        enqueueEvent(event);
     }
 
     private void processAutonomousPhase() {
-        GameEvent event = currentPhase.handle(this, null, null);
-        notifyListeners(event);
+        currentPhase.handle(this, null, null);
+
+    }
+    public void enqueueEvent(GameEvent event) {
+        eventQueue.add(event);
+    }
+
+    private void dispatchQueuedEvents() {
+        while (!eventQueue.isEmpty()) {
+            GameEvent event = eventQueue.poll();
+            notifyListeners(event);
+        }
     }
 
     private void notifyListeners(GameEvent event) {
@@ -116,6 +130,14 @@ public class Game {
     }
     public int getTotalPlayers() {
         return totalPlayers;
+    }
+
+    public int getTotalCurrentPlayers() {
+        return players.size();
+    }
+
+    public List<Map.Entry<Card,Player>> getSubmittedRedApples() {
+        return submittedRedApples;
     }
 
 

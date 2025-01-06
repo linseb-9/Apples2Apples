@@ -6,124 +6,114 @@ import com.linseb9.game.events.GameEvent;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
+import java.util.ArrayList;
 
 public class Client {
-    private Socket socket = null;
-    private BufferedReader userInput = null;
-    private DataOutputStream outString = null;
-    private ObjectOutputStream out = null;
-    private ObjectInputStream in = null;
-    private GameAction action;
+    private Socket socket;
+    private BufferedReader userInput;
+    private DataOutputStream outString;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
 
     public Client(String address, int port) {
         try {
-            socket = new Socket(address, port);
-
-            // input from user
-            userInput = new BufferedReader(new InputStreamReader(System.in));
-
-            // send string to server
-            outString = new DataOutputStream(socket.getOutputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
-            // read data via socket
-            in = new ObjectInputStream(socket.getInputStream());
-
+            initializeConnection(address, port);
             System.out.println("Connected to gameserver...");
 
-            // new thread to get server messages
-            new Thread(this::eventReceiver).start();
-
-            // take userinput
-            gameActionTransmitter();
-        }
-        catch (UnknownHostException u) {
-            System.out.println(u);
-        }
-        catch (IOException io) {
-            System.out.println("Constructor: " + io);
-        }
-        finally {
+            startEventReceiverThread();
+            startGameActionTransmitter();
+        } catch (UnknownHostException e) {
+            System.out.println("Unknown host: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error during connection setup: " + e.getMessage());
+        } finally {
             closeConnection();
         }
-
     }
-    // Receive events from the game throught event dispatcher
+
+    private void initializeConnection(String address, int port) throws IOException {
+        socket = new Socket(address, port);
+        userInput = new BufferedReader(new InputStreamReader(System.in));
+        outString = new DataOutputStream(socket.getOutputStream());
+        out = new ObjectOutputStream(socket.getOutputStream());
+        in = new ObjectInputStream(socket.getInputStream());
+    }
+
+    private void startEventReceiverThread() {
+        new Thread(this::eventReceiver).start();
+    }
+
     private void eventReceiver() {
-        boolean run = true;
-        try{
-            while(run) {
+        try {
+            while (true) {
                 GameEvent event = (GameEvent) in.readObject();
                 System.out.println("Game: " + event.getMessage());
             }
-        }
-        catch(IOException io) {
-            System.out.println("eventReceiver: " + io);
+        } catch (IOException e) {
+            System.out.println("Error receiving event: " + e.getMessage());
+            closeConnection();
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } finally{
-            run = false;
+            System.out.println("Error parsing event: " + e.getMessage());
         }
     }
 
-
-    private void eventParser(GameEvent event){
-
-    }
-
-    private void gameActionTransmitter () {
-        // string to read message from user
-        String input = "";
-
+    private void startGameActionTransmitter() {
         try {
-            GameAction action = new GameAction("JOINED GAME");
-            out.writeObject(action);
-            while (!input.equals("Exit")) {
-                input = userInput.readLine();
-                if (!verifyInput(input)){
-                    System.out.println("Enter a valid digit");
-                    continue;
-                }
-                action = new GameAction(input);
-                out.writeObject(action);
-                //out.writeUTF(line);
-            }
-        }
-        catch (IOException io) {
-            System.out.println("GameActionTransmitter: " + io);
-        }
-        finally {
-            System.out.println("Dis is Wierd");
+            sendInitialGameAction();
+            transmitUserInput();
+        } catch (IOException e) {
+            System.out.println("Error during game action transmission: " + e.getMessage());
+        } finally {
             closeConnection();
         }
-
     }
 
-    private boolean verifyInput(String input) {
+    private void sendInitialGameAction() throws IOException {
+        GameAction initialAction = new GameAction("JOINED GAME", 0);
+        out.writeObject(initialAction);
+    }
+
+    private void transmitUserInput() throws IOException {
+        String input;
+        while (true) {
+            input = userInput.readLine();
+            if (input.equalsIgnoreCase("Exit")) {
+                System.out.println("Exiting game...");
+                break;
+            }
+
+            if (!isValidInput(input)) {
+                System.out.println("Invalid input. Please enter a valid digit.");
+                continue;
+            }
+
+            GameAction action = new GameAction("PLAY CARD", Integer.parseInt(input));
+            out.writeObject(action);
+        }
+    }
+
+    private boolean isValidInput(String input) {
         try {
-            int i = Integer.parseInt(input);
-        } catch (NumberFormatException nfe) {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
             return false;
         }
-        return true;
     }
 
     private void closeConnection() {
-        // close the connection
         try {
-            System.out.println("Closing connection and shutting down");
-            userInput.close();
-            out.close();
-            socket.close();
+            System.out.println("Closing connection and shutting down.");
+            if (userInput != null) userInput.close();
+            if (out != null) out.close();
+            if (socket != null) socket.close();
             System.exit(1);
-        }
-        catch (IOException io) {
-            System.out.println("closeConnection: " + io);
+        } catch (IOException e) {
+            System.out.println("Error during connection closure: " + e.getMessage());
         }
     }
 
-
     public static void main(String[] args) {
-        Client client = new Client("127.0.0.1", 1338);
+        new Client("127.0.0.1", 1338);
     }
 }

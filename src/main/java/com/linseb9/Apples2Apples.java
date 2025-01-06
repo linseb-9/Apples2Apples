@@ -9,8 +9,8 @@ import java.util.*;
 
 public class Apples2Apples {
     private static final int MAX_TRIES = 5;
-    private static final int MAX_PLAYERS = 4;
-    private static final int MIN_PLAYERS = 1;
+    private static final int MAX_PLAYERS = 8;
+    private static final int MIN_PLAYERS = 4;
     private static final int MAX_BOTS = 3;
     private static final int MIN_BOTS = 0;
     private static int numOfBots;
@@ -32,23 +32,23 @@ public class Apples2Apples {
         int inputCounter = 0;
 
         System.out.println("Welcome to Apples to Apples!");
-        System.out.println("Please enter how many players that are attending, between 1-4");
+        System.out.println("Please enter how many players that are attending, between " + MIN_PLAYERS + " - " + MAX_PLAYERS);
 
         while (inputCounter < MAX_TRIES) {
             try{
                 numOfPlayers = scanner.nextInt();
                 if (numOfPlayers > MAX_PLAYERS || numOfPlayers < MIN_PLAYERS) {
-                    System.out.println("Error, Please enter a digit between 1-4");
+                    System.out.println("Error, Please enter a digit between " + MIN_PLAYERS + " - " + MAX_PLAYERS);
                     inputCounter++;
                     continue;
                 }
 
-                System.out.println("How many bots would you like to add to the game? Chose between 0-3");
+                System.out.println("How many bots would you like to add to the game? Chose between " + MIN_BOTS + " - " + MAX_BOTS);
                 while (inputCounter < MAX_TRIES) {
                     try {
                         numOfBots = scanner.nextInt();
                         if (numOfBots > MAX_BOTS || numOfBots < MIN_BOTS) {
-                            System.out.println("Error, please enter a digit between 0-3");
+                            System.out.println("Error, please enter a digit between "  + MIN_BOTS + " - " + MAX_BOTS);
                             inputCounter++;
                             continue;
                         }

@@ -1,6 +1,8 @@
 package com.linseb9.game.cards;
 
-public class RedApple implements Card {
+import java.io.Serializable;
+
+public class RedApple implements Card, Serializable  {
     private String title;
     private String description;
 
