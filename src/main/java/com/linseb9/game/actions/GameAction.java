@@ -4,15 +4,21 @@ import java.io.Serializable;
 
 public class GameAction implements Serializable {
     private final String name;
-    //private final Object data;
+    private int cardNr;
 
-    public GameAction(String name) {
+
+    public GameAction(String name, int cardNr) {
         this.name = name;
-        //this.data = data;
+        this.cardNr = cardNr;
+
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getCardNr() {
+        return cardNr;
     }
 
     public void execute() {

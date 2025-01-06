@@ -6,13 +6,19 @@ import com.linseb9.game.core.GameMechanics;
 import com.linseb9.game.core.Rules;
 import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.players.Player;
+import com.linseb9.game.util.TerminalFormatting;
 
 public class ChooseJudgePhase implements Phase{
-    private String name = "Choose judge phase";
-    private Boolean phaseComplete = false;
+    private String gameMessage = "Choosing judge";
+    private Boolean phaseComplete;
+
+    public ChooseJudgePhase() {
+        this.phaseComplete = false;
+    }
+
     @Override
-    public String getName() {
-        return name;
+    public String getMessage() {
+        return gameMessage;
     }
 
     @Override
@@ -21,12 +27,14 @@ public class ChooseJudgePhase implements Phase{
     }
 
     @Override
-    public GameEvent handle(Game game, GameAction action, Player player) {
+    public void handle(Game game, GameAction action, Player player) {
         // This is autonomous and doesn't need the input
+        TerminalFormatting tformat = new TerminalFormatting();
         Rules rules = game.getRules();
         player  = rules.chooseJudge(game.getPlayers());
         phaseComplete = true;
-        return new GameEvent(this, action, "Judge is player " + player.id);
+        game.enqueueEvent(new GameEvent(this, action, "Judge is player " + player.id, null));
+        game.enqueueEvent(new GameEvent(this, action, tformat.getBlue() + "You are the judge " +tformat.getReset(), player));
 
     }
 

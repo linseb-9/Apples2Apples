@@ -11,7 +11,7 @@ public interface Rules {
     public void resetGame(ArrayList<Player> players);
     default int calculateWinningCondition(int nrOfPlayers) {
         return switch (nrOfPlayers) {
-            case 4 -> 8;
+            case 4 -> 2;
             case 5 -> 7;
             case 6 -> 6;
             case 7 -> 5;

@@ -13,14 +13,12 @@ import java.util.List;
 public class Server {
     private EventDispatcher dispatcher;
     private List<ClientHandler> clients;
-    private Game game;
 
     public Server(int port, EventDispatcher dispatcher, Game game) {
-        try {
-            clients = new ArrayList<ClientHandler>();
-            this.dispatcher = dispatcher;
-            this.game = game;
+        this.clients = new ArrayList<ClientHandler>();
+        this.dispatcher = dispatcher;
 
+        try {
             // Set up the server
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Server started on port " + port);
@@ -33,10 +31,8 @@ public class Server {
                 // Create a new ClientHandler for the client
                 ClientHandler clientHandler = new ClientHandler(clientSocket, dispatcher, game, clients.size());
                 clients.add(clientHandler);
+
                 dispatcher.addClient(clientHandler);
-                //sendMessage("Server: Connected to the game server" , clientHandler);
-                //broadcastMessage("Server: A new player joined the server!");
-                //dispatcher.addClient(clientHandler); // Register the client with the dispatcher
                 new Thread(clientHandler).start();
             }
         } catch (IOException e) {

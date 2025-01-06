@@ -7,12 +7,16 @@ import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.players.Player;
 
 public class ShuffleCardsPhase implements Phase {
-    private String name = "Shuffle cards phase";
+    private String gameMessage = "Shuffling cards";
     private Boolean phaseComplete = false;
 
+    public ShuffleCardsPhase(){
+        this.phaseComplete = false;
+    }
+
     @Override
-    public String getName() {
-        return name;
+    public String getMessage() {
+        return gameMessage;
     }
 
     @Override
@@ -21,14 +25,13 @@ public class ShuffleCardsPhase implements Phase {
     }
 
     @Override
-    public GameEvent handle(Game game, GameAction action, Player player) {
+    public void handle(Game game, GameAction action, Player player) {
         // This is autonomous and doesn't need the input
         GameMechanics gameMechanics = game.getGameMechanics();
         gameMechanics.shuffleDeck(game.getGreenApples());
         gameMechanics.shuffleDeck(game.getRedApples());
         phaseComplete = true;
-        return new GameEvent(this, action, "Decks has been shuffled" );
-
+        game.enqueueEvent(new GameEvent(this, action, "Decks has been shuffled", null ));
     }
 
     @Override
