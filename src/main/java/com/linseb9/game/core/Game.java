@@ -7,6 +7,7 @@ import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.events.GameEventListener;
 import com.linseb9.game.phases.Phase;
 import com.linseb9.game.phases.SetupPhase;
+import com.linseb9.game.players.BotPlayer;
 import com.linseb9.game.players.Player;
 
 import java.util.*;
@@ -18,7 +19,6 @@ public class Game {
     private final List<GameEventListener> listeners = new ArrayList<>();
     private final ArrayList<Player> players;
     private Phase currentPhase;
-    private int gameCounter;
     private CardBuilder cardBuilder;
     private ArrayList<Card> greenApples;
     private ArrayList<Card> redApples;
@@ -35,7 +35,6 @@ public class Game {
         this.numOfBots = numOfBots;
         this.totalPlayers = numOfPlayers + numOfBots;
         this.currentPhase = new SetupPhase();
-        this.gameCounter = 0;
         this.players = new ArrayList<Player>();
         this.gameMechanics = new GameMechanics();
         this.submittedRedApples = new ArrayList<>();
@@ -76,7 +75,7 @@ public class Game {
 
     private void transitionToNextPhase() {
         currentPhase = currentPhase.nextPhase();
-        GameEvent event = new GameEvent(this, null,  currentPhase.getMessage(), null);
+        GameEvent event = new GameEvent(currentPhase, null,  currentPhase.getMessage(), null);
         enqueueEvent(event);
     }
 
@@ -139,7 +138,6 @@ public class Game {
     public List<Map.Entry<Card,Player>> getSubmittedRedApples() {
         return submittedRedApples;
     }
-
 
 
 }

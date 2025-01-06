@@ -14,8 +14,8 @@ public class Server {
     private EventDispatcher dispatcher;
     private List<ClientHandler> clients;
 
-    public Server(int port, EventDispatcher dispatcher, Game game) {
-        this.clients = new ArrayList<ClientHandler>();
+    public Server(int port, EventDispatcher dispatcher, Game game, int playerId) {
+        this.clients = new ArrayList<>();
         this.dispatcher = dispatcher;
 
         try {
@@ -29,11 +29,12 @@ public class Server {
                 System.out.println("Server: Client connected: " + clientSocket.getInetAddress());
 
                 // Create a new ClientHandler for the client
-                ClientHandler clientHandler = new ClientHandler(clientSocket, dispatcher, game, clients.size());
+                ClientHandler clientHandler = new ClientHandler(clientSocket, dispatcher, game, playerId);
                 clients.add(clientHandler);
 
                 dispatcher.addClient(clientHandler);
                 new Thread(clientHandler).start();
+                playerId++;
             }
         } catch (IOException e) {
             System.err.println("Server error: " + e.getMessage());

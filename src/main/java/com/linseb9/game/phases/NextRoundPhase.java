@@ -34,7 +34,7 @@ public class NextRoundPhase implements Phase{
         ArrayList<Player> players = game.getPlayers();
         for (Player plr: players) {
             if (rules.isWinner(plr)) {
-                game.enqueueEvent(new GameEvent(game, action, "Game over, winner is player " + plr.id, null));
+                game.enqueueEvent(new GameEvent(game, action, "Game over, winner is player " + plr.getId(), null));
                 game.enqueueEvent(new GameEvent(game, action, "Type 'Exit' to close the game", null));
                 return;
             }

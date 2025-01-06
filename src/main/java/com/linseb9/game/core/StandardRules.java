@@ -16,15 +16,15 @@ public class StandardRules implements Rules {
 
     @Override
     public boolean isWinner(Player player) {
-        return player.score == winningCondition;
+        return player.getScore() == winningCondition;
     }
 
     @Override
     public void resetGame(ArrayList<Player> players) {
         validatePlayersList(players, "reset the game");
         for (Player player: players) {
-            player.score = 0;
-            player.judge = false;
+            player.resetScore();
+            player.removeAsJudge();
         }
     }
 
@@ -33,7 +33,7 @@ public class StandardRules implements Rules {
         validatePlayersList(players, "choose a judge");
         int randomIndex = random.nextInt(players.size());
         Player player = players.get(randomIndex);
-        player.judge = true;
+        player.setToJudge();
         return player;
     }
 
@@ -41,7 +41,7 @@ public class StandardRules implements Rules {
     public void newRound(ArrayList<Player> players) {
         validatePlayersList(players, "start a new round");
         for (Player player: players) {
-            player.judge = false;
+            player.removeAsJudge();
         }
     }
 
