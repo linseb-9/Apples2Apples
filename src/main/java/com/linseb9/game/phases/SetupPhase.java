@@ -43,13 +43,13 @@ public class SetupPhase implements Phase{
 
                 if (counter.size() == game.getTotalPlayers()) {
                     phaseComplete = true;
-                    game.enqueueEvent(new GameEvent(game, action, "A new player joined the game, player: " + player.id, null));
-                    game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() + "Welcome, you are player " + player.id + tformat.getReset(), player));
+                    game.enqueueEvent(new GameEvent(game, action, "A new player joined the game, player: " + player.getId(), null));
+                    game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() + "Welcome, you are player " + player.getId() + tformat.getReset(), player));
                     game.enqueueEvent(new GameEvent(game, action, "Setup phase complete", null));
                     return;
                 }
-                game.enqueueEvent(new GameEvent(game, action, "A new player joined the game, player: " + player.id, null));
-                game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() +"Welcome, you are player " + player.id + tformat.getReset(), player));
+                game.enqueueEvent(new GameEvent(game, action, "A new player joined the game, player: " + player.getId(), null));
+                game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() +"Welcome, you are player " + player.getId() + tformat.getReset(), player));
                 return;
             }
         }

@@ -28,15 +28,15 @@ public class PickWinnerPhase implements Phase{
     @Override
     public void handle(Game game, GameAction action, Player player) {
         TerminalFormatting tformat = new TerminalFormatting();
-        if (player.judge) {
+        if (player.isJudge()) {
             int cardNr = action.getCardNr();
 
-            if(cardNr >= 0 && cardNr < game.getTotalCurrentPlayers()- 1) {
+            if(cardNr >= 0 && cardNr < game.getTotalCurrentPlayers() -1 ) {
                 Card winnerCard = game.getSubmittedRedApples().get(cardNr).getKey();
                 Player winnerPlayer = game.getSubmittedRedApples().get(cardNr).getValue();
-                winnerPlayer.score++;
+                winnerPlayer.incrementScore();
                 phaseComplete = true;
-                game.enqueueEvent(new GameEvent(game, action, "Winner is player " + winnerPlayer.id, null));
+                game.enqueueEvent(new GameEvent(game, action, "Winner is player " + winnerPlayer.getId(), null));
                 game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() +"Congratulations, you won the game!" +tformat.getReset(), winnerPlayer));
                 return;
             }

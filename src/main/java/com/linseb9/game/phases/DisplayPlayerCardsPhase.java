@@ -33,7 +33,7 @@ public class DisplayPlayerCardsPhase implements Phase{
         TerminalFormatting tformat = new TerminalFormatting();
         ArrayList<Player> players = game.getPlayers();
         for (Player plr: players) {
-            if (!plr.judge) {
+            if (!plr.isJudge()) {
                 game.enqueueEvent(new GameEvent(game, action, displayCards(plr, tformat), plr));
             }
         }
@@ -53,7 +53,7 @@ public class DisplayPlayerCardsPhase implements Phase{
     private String displayCards(Player player, TerminalFormatting tformat) {
         StringBuilder cardDisplay = new StringBuilder();
         int index = 0;
-        for (Card card : player.deck) {
+        for (Card card : player.getDeck()) {
             cardDisplay.append("\n").append(tformat.getRed()).append(index).append(": ").append(card.attributes()).append(tformat.getReset());
             index++;
         }

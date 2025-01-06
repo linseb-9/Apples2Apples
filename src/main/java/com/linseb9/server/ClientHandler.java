@@ -4,6 +4,7 @@ import com.linseb9.game.events.EventDispatcher;
 import com.linseb9.game.core.Game;
 import com.linseb9.game.actions.GameAction;
 import com.linseb9.game.events.GameEvent;
+import com.linseb9.game.players.HumanPlayer;
 import com.linseb9.game.players.Player;
 
 import java.io.ObjectInputStream;
@@ -20,7 +21,7 @@ public class ClientHandler implements Runnable {
     private Player player;
 
     public ClientHandler(Socket socket, EventDispatcher dispatcher, Game game, int playerId) {
-        this.player = new Player(playerId);
+        this.player = new HumanPlayer(playerId);
         this.game = game;
         this.dispatcher = dispatcher;
         this.clientSocket = socket;

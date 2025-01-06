@@ -33,7 +33,7 @@ public class ChooseJudgePhase implements Phase{
         Rules rules = game.getRules();
         player  = rules.chooseJudge(game.getPlayers());
         phaseComplete = true;
-        game.enqueueEvent(new GameEvent(this, action, "Judge is player " + player.id, null));
+        game.enqueueEvent(new GameEvent(this, action, "Judge is player " + player.getId(), null));
         game.enqueueEvent(new GameEvent(this, action, tformat.getBlue() + "You are the judge " +tformat.getReset(), player));
 
     }
