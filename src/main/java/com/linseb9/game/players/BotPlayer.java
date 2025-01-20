@@ -1,6 +1,7 @@
 package com.linseb9.game.players;
 
 import com.linseb9.game.actions.GameAction;
+import com.linseb9.game.actions.GameActionDispatcher;
 import com.linseb9.game.cards.Card;
 import com.linseb9.game.core.Game;
 import com.linseb9.game.events.EventDispatcher;
@@ -15,13 +16,15 @@ import java.util.Random;
 
 public class BotPlayer extends Player implements Runnable, Serializable {
     private Game game;
-    private EventDispatcher dispatcher;
+    private GameActionDispatcher gameActionDispatcher;
+    private EventDispatcher eventDispatcher;
     private Random random;
 
-    public BotPlayer(int id, Game game, EventDispatcher dispatcher){
+    public BotPlayer(int id, Game game, EventDispatcher eventDispatcher, GameActionDispatcher gameActionDispatcher){
         super(id);
         this.game = game;
-        this.dispatcher = dispatcher;
+        this.gameActionDispatcher = gameActionDispatcher;
+        this.eventDispatcher = eventDispatcher;
         this.random = new Random();
     }
 
@@ -29,9 +32,9 @@ public class BotPlayer extends Player implements Runnable, Serializable {
     @Override
     public void run() {
         game.addPlayers(this);
-        dispatcher.addClient(this);
+        eventDispatcher.addClient(this);
         GameAction action = new GameAction("JOINED GAME", 0);
-        dispatcher.dispatchAction(action, this);
+        gameActionDispatcher.dispatchAction(action, this);
     }
 
     public void eventReader(GameEvent event) {
@@ -55,12 +58,12 @@ public class BotPlayer extends Player implements Runnable, Serializable {
     private void chooseWinner() {
         int cardNr = random.nextInt(0,game.getTotalCurrentPlayers() -1);
         GameAction action = new GameAction("PLAY CARD", cardNr);
-        dispatcher.dispatchAction(action, this);
+        gameActionDispatcher.dispatchAction(action, this);
     }
 
     private void playRedApple() {
         int cardNr = random.nextInt(0, 7);
         GameAction action = new GameAction("PLAY CARD", cardNr);
-        dispatcher.dispatchAction(action, this);
+        gameActionDispatcher.dispatchAction(action, this);
     }
 }

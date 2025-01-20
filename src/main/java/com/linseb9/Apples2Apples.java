@@ -1,5 +1,6 @@
 package com.linseb9;
 
+import com.linseb9.game.actions.GameActionDispatcher;
 import com.linseb9.game.events.EventDispatcher;
 import com.linseb9.game.core.Game;
 import com.linseb9.game.players.BotPlayer;
@@ -19,19 +20,20 @@ public class Apples2Apples {
 
     private static void initializeGame(int numOfPlayers, int numOfBots) {
         Game game = new Game(numOfPlayers, numOfBots);
-        EventDispatcher dispatcher = new EventDispatcher(game);
-        game.addEventListener(dispatcher);
-        addBots(numOfBots, game, dispatcher);
+        EventDispatcher eventDispatcher = new EventDispatcher();
+        GameActionDispatcher gameActionDispatcher = new GameActionDispatcher(game);
+        game.addEventListener(eventDispatcher);
+        addBots(numOfBots, game, eventDispatcher, gameActionDispatcher);
         System.out.println("Starting game server");
-        Server server = new Server(1338, dispatcher, game, numOfBots);
+        Server server = new Server(1338, eventDispatcher, gameActionDispatcher, game, numOfBots);
     }
 
-    private static void addBots(int numOfBots, Game game, EventDispatcher dispatcher) {
+    private static void addBots(int numOfBots, Game game, EventDispatcher eventDispatcher, GameActionDispatcher gameActionDispatcher) {
 
         int botId = 0;
         if (numOfBots != 0) {
              for (int i =0; i < numOfBots; i++) {
-                 BotPlayer bot = new BotPlayer(botId, game, dispatcher);
+                 BotPlayer bot = new BotPlayer(botId, game, eventDispatcher, gameActionDispatcher);
                  bot.run();
                  botId++;
              }
