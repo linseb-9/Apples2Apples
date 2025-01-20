@@ -37,7 +37,7 @@ public class PickWinnerPhase implements Phase{
                 winnerPlayer.incrementScore();
                 phaseComplete = true;
                 game.enqueueEvent(new GameEvent(game, action, "Winner is player " + winnerPlayer.getId(), null));
-                game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() +"Congratulations, you won the game!" +tformat.getReset(), winnerPlayer));
+                game.enqueueEvent(new GameEvent(game, action, tformat.getBlue() +"Congratulations, you won the round!" +tformat.getReset(), winnerPlayer));
                 return;
             }
 

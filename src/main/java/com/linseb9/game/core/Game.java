@@ -3,6 +3,7 @@ package com.linseb9.game.core;
 import com.linseb9.game.actions.GameAction;
 import com.linseb9.game.cards.Card;
 import com.linseb9.game.cards.CardBuilder;
+import com.linseb9.game.events.EventDispatcher;
 import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.events.GameEventListener;
 import com.linseb9.game.phases.Phase;
@@ -26,7 +27,8 @@ public class Game {
     private Rules rules;
     private Card currentGreenApple;
     private GameMechanics gameMechanics;
-    private Queue<GameEvent> eventQueue;
+
+
 
 
 
@@ -46,7 +48,7 @@ public class Game {
         cardBuilder = new CardBuilder();
         greenApples = cardBuilder.buildGreenApples();
         redApples = cardBuilder.buildRedApples();
-        eventQueue = new LinkedList<>();
+
     }
 
 
@@ -54,7 +56,7 @@ public class Game {
         // Process the action in the current phase
         processActionInPhase(player, action);
 
-        dispatchQueuedEvents();
+        //dispatchQueuedEvents();
 
         // Check if the phase is complete and transition if necessary
         while (currentPhase.isComplete()) {
@@ -65,7 +67,7 @@ public class Game {
                 processAutonomousPhase();
             }
 
-            dispatchQueuedEvents();
+            //dispatchQueuedEvents();
         }
     }
 
@@ -83,18 +85,8 @@ public class Game {
         currentPhase.handle(this, null, null);
 
     }
+
     public void enqueueEvent(GameEvent event) {
-        eventQueue.add(event);
-    }
-
-    private void dispatchQueuedEvents() {
-        while (!eventQueue.isEmpty()) {
-            GameEvent event = eventQueue.poll();
-            notifyListeners(event);
-        }
-    }
-
-    private void notifyListeners(GameEvent event) {
         for (GameEventListener listener : listeners) {
             listener.onGameEvent(event);
         }
@@ -110,6 +102,10 @@ public class Game {
 
     public void addPlayers(Player player) {
         players.add(player);
+    }
+
+    public void removePlayers(Player player) {
+        players.remove(player);
     }
 
     public GameMechanics getGameMechanics() {
