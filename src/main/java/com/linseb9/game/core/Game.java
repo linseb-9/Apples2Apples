@@ -123,10 +123,12 @@ public class Game {
     public Rules getRules() {
         return rules;
     }
+    public Phase getCurrentPhase() {
+        return currentPhase;
+    }
     public int getTotalPlayers() {
         return totalPlayers;
     }
-
     public int getTotalCurrentPlayers() {
         return players.size();
     }

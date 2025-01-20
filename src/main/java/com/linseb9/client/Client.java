@@ -1,7 +1,5 @@
 package com.linseb9.client;
 
-import com.linseb9.game.actions.GameAction;
-import com.linseb9.game.events.GameEvent;
 
 import java.io.IOException;
 
@@ -23,12 +21,14 @@ public class Client {
 
         } catch (IOException e) {
             System.out.println("Error during connection setup: " + e.getMessage());
-        } finally {
-            try {
-                if (connectionManager != null) connectionManager.close();
-            } catch (IOException e) {
-                System.out.println("Error closing connection: " + e.getMessage());
-            }
+        }
+    }
+
+    public void close() {
+        try {
+            if (connectionManager != null) connectionManager.close();
+        } catch (IOException e) {
+            System.out.println("Error closing connection: " + e.getMessage());
         }
     }
 
