@@ -10,13 +10,13 @@ import java.util.ArrayList;
 
 public class SetupPhase implements Phase{
     private String gameMessage = "Setting up game";
-    private final ArrayList<Player> counter;
+    private final ArrayList<Player> counter = new ArrayList<Player>();
     private Boolean phaseComplete;
 
 
     public SetupPhase() {
         this.phaseComplete = false;
-        this.counter = new ArrayList<Player>();
+
     }
 
 

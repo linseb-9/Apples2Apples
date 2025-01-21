@@ -3,12 +3,10 @@ package com.linseb9.game.core;
 import com.linseb9.game.actions.GameAction;
 import com.linseb9.game.cards.Card;
 import com.linseb9.game.cards.CardBuilder;
-import com.linseb9.game.events.EventDispatcher;
 import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.events.GameEventListener;
 import com.linseb9.game.phases.Phase;
 import com.linseb9.game.phases.SetupPhase;
-import com.linseb9.game.players.BotPlayer;
 import com.linseb9.game.players.Player;
 
 import java.util.*;
@@ -25,7 +23,6 @@ public class Game {
     private ArrayList<Card> redApples;
     private List<Map.Entry<Card, Player>> submittedRedApples;
     private Rules rules;
-    private Card currentGreenApple;
     private GameMechanics gameMechanics;
 
 
@@ -56,7 +53,6 @@ public class Game {
         // Process the action in the current phase
         processActionInPhase(player, action);
 
-        //dispatchQueuedEvents();
 
         // Check if the phase is complete and transition if necessary
         while (currentPhase.isComplete()) {
@@ -67,7 +63,6 @@ public class Game {
                 processAutonomousPhase();
             }
 
-            //dispatchQueuedEvents();
         }
     }
 
@@ -123,10 +118,12 @@ public class Game {
     public Rules getRules() {
         return rules;
     }
+    public Phase getCurrentPhase() {
+        return currentPhase;
+    }
     public int getTotalPlayers() {
         return totalPlayers;
     }
-
     public int getTotalCurrentPlayers() {
         return players.size();
     }

@@ -1,38 +1,59 @@
 package com.linseb9.client;
 
-import com.linseb9.game.actions.GameAction;
-import com.linseb9.game.events.GameEvent;
-
 import java.io.IOException;
 
 public class Client {
     private ConnectionManager connectionManager;
+    private EventReceiver eventReceiver;
+    private ActionTransmitter actionTransmitter;
 
     public Client(String address, int port) {
-        try {
+        try{
             connectionManager = new ConnectionManager(address, port);
             System.out.println("Connected to gameserver...");
-
-            // Start receiving events
-            EventReceiver eventReceiver = new EventReceiver(connectionManager.getInputStream());
-            new Thread(eventReceiver).start();
-
-            // Start transmitting actions
-            ActionTransmitter actionTransmitter = new ActionTransmitter(connectionManager.getOutputStream());
-            actionTransmitter.startTransmitting();
-
         } catch (IOException e) {
-            System.out.println("Error during connection setup: " + e.getMessage());
-        } finally {
-            try {
-                if (connectionManager != null) connectionManager.close();
-            } catch (IOException e) {
-                System.out.println("Error closing connection: " + e.getMessage());
-            }
+            System.out.println("Failed to connect to server: " + e.getMessage());
+        }
+
+    }
+
+    public void startEventReceiver() {
+        try {
+            eventReceiver = new EventReceiver(connectionManager.getInputStream());
+            new Thread(eventReceiver).start();
+            System.out.println("EventReceiver started.");
+        } catch (IOException e) {
+            System.out.println("Failed to start EventReceiver: " + e.getMessage());
+        }
+    }
+
+    public void startActionTransmitter() {
+        try {
+            actionTransmitter = new ActionTransmitter(connectionManager.getOutputStream());
+            actionTransmitter.startTransmitting();
+            System.out.println("ActionTransmitter started.");
+        } catch (IOException e) {
+            System.out.println("Failed to start ActionTransmitter: " + e.getMessage());
+        }
+    }
+
+    public void close() {
+        try {
+            if (connectionManager != null) connectionManager.close();
+            System.out.println("Client connection closed.");
+        } catch (IOException e) {
+            System.out.println("Error closing connection: " + e.getMessage());
         }
     }
 
     public static void main(String[] args) {
-        new Client("127.0.0.1", 1338);
+
+        Client client = new Client("127.0.0.1", 1338);
+
+        client.startEventReceiver();
+        client.startActionTransmitter();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(client::close));
+
     }
 }

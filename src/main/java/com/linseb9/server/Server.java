@@ -7,8 +7,6 @@ import com.linseb9.game.core.Game;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Server {
@@ -25,8 +23,8 @@ public class Server {
         try {
             // Set up the server
             serverSocket = new ServerSocket(port);
-            System.out.println("Server started on port " + port);
-            System.out.println("Waiting for clients to connect...");
+            System.out.println("Server: Started on port " + port);
+            System.out.println("Server: Waiting for clients to connect...");
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 System.out.println("Server shutting down..");
@@ -44,7 +42,7 @@ public class Server {
                 playerId++;
             }
         } catch (IOException e) {
-            System.err.println("Server error: " + e.getMessage());
+            System.err.println("Server: Server error: " + e.getMessage());
         } finally {
             closeServer();
         }
@@ -54,11 +52,11 @@ public class Server {
         running = false;
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
-                System.out.println("Server shutting down!");
+                System.out.println("Server: Server shutting down!");
                 serverSocket.close();
             }
         } catch (IOException e) {
-            System.out.println("Failed to shut down server: " + e.getMessage());
+            System.out.println("Server: Failed to shut down server: " + e.getMessage());
         }
     }
 

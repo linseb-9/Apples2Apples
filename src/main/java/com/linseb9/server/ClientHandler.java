@@ -1,7 +1,6 @@
 package com.linseb9.server;
 
 import com.linseb9.game.actions.GameActionDispatcher;
-import com.linseb9.game.events.EventDispatcher;
 import com.linseb9.game.core.Game;
 import com.linseb9.game.actions.GameAction;
 import com.linseb9.game.events.GameEvent;

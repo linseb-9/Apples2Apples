@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class GameAction implements Serializable {
     private final String name;
-    private int cardNr;
+    private final int cardNr;
 
 
     public GameAction(String name, int cardNr) {
@@ -21,7 +21,4 @@ public class GameAction implements Serializable {
         return cardNr;
     }
 
-    public void execute() {
-        System.out.println("Executing action " + name);
-    }
 }
