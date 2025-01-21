@@ -7,21 +7,33 @@ import java.net.Socket;
 
 public class ConnectionManager {
     private final Socket socket;
-    private final ObjectInputStream input;
-    private final ObjectOutputStream output;
+    private  ObjectInputStream input = null;
+    private  ObjectOutputStream output = null;
 
 
     public ConnectionManager(String address,int port) throws IOException {
         this.socket = new Socket(address, port);
-        this.output = new ObjectOutputStream(socket.getOutputStream());
-        this.input = new ObjectInputStream(socket.getInputStream());
     }
 
-    public ObjectOutputStream getOutputStream() {
+    public ObjectOutputStream getOutputStream() throws IOException {
+        if (output == null) {
+            try {
+                output = new ObjectOutputStream(socket.getOutputStream());
+            } catch (IOException e) {
+                throw new IOException("Could not start the object output stream: " + e.getMessage(), e);
+            }
+        }
         return output;
     }
 
-    public ObjectInputStream getInputStream() {
+    public ObjectInputStream getInputStream() throws IOException {
+        if (input == null) {
+            try {
+                input = new ObjectInputStream(socket.getInputStream());
+            } catch (IOException e) {
+                throw new IOException("Could not start the object intput stream: " + e.getMessage(), e);
+            }
+        }
         return input;
     }
 

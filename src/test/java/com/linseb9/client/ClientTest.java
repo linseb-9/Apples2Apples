@@ -25,6 +25,7 @@ public class ClientTest {
             Client client = new Client("127.0.0.1", port);
 
             assertNotNull(client, "Client should exist and connect to the server.");
+
         }
     }
 }
