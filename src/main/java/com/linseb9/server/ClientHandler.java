@@ -33,7 +33,7 @@ public class ClientHandler implements Runnable {
             this.dataIn = new ObjectInputStream(clientSocket.getInputStream());
         }
         catch (Exception e) {
-            System.out.println("Failed to initialize the clientHandler: " + e);
+            System.out.println("Failed to initialize the clientHandler: " + e.getMessage());
             cleanup();
         }
     }
@@ -49,7 +49,7 @@ public class ClientHandler implements Runnable {
             }
         }
         catch(Exception e) {
-            System.out.println("Something went wrong in the ClientHandler: " + e);
+            System.out.println("Something went wrong in the ClientHandler: " + e.getMessage());
             cleanup();
         }
     }
@@ -64,7 +64,7 @@ public class ClientHandler implements Runnable {
             }
         }
         catch(Exception e) {
-            System.out.println("Error while forwarding message: " + e);
+            System.out.println("Error while forwarding message: " + e.getMessage());
         }
 
     }
