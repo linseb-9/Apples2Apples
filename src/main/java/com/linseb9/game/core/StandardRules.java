@@ -5,6 +5,10 @@ import com.linseb9.game.players.Player;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The StandardRules contains the basic Apples2Apples rules and it is used by the
+ * games different phases.
+ */
 public class StandardRules implements Rules {
     private final int winningCondition;
     private Random random;

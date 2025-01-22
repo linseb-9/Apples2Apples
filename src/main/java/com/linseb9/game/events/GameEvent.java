@@ -5,6 +5,11 @@ import com.linseb9.game.players.Player;
 
 import java.util.EventObject;
 
+/**
+ * The GameEvent class is used by the games different phases. GameEvents are
+ * created in the phases based of the users GameAction inputs. The source and
+ * targetPlayer are important parts to send GameEvents to the correct receiver.
+ */
 public class GameEvent extends EventObject {
     private final String message;
     private final GameAction action;

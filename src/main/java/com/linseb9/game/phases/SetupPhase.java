@@ -7,7 +7,11 @@ import com.linseb9.game.players.Player;
 import com.linseb9.game.util.TerminalFormatting;
 
 import java.util.ArrayList;
-
+/**
+ * The different phases does exactly as their names suggest. The handle method
+ * is where the logic is handled and each phase has its own implementation.
+ * The method nextPhase is used by the game to move to a new phase.
+ */
 public class SetupPhase implements Phase{
     private String gameMessage = "Setting up game";
     private final ArrayList<Player> counter = new ArrayList<Player>();

@@ -10,8 +10,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * The EventDispatcher mis responsible for sending the GameEvents to the
+ * connected players. It is called from the Game class when and GameEvent is
+ * created. It also manages the eventQueue that contains all created GameEvents.
+ */
 public class EventDispatcher implements GameEventListener {
-    //private final Server server;
+
 
     private final ArrayList<ClientHandler> clients;
     private final ArrayList<BotPlayer> botPlayers;
@@ -33,14 +38,14 @@ public class EventDispatcher implements GameEventListener {
     public void enqueueEvent(GameEvent event) {
         eventQueue.add(event);
     }
-
+    // Sends all GameEvent from the eventQueue
     private void dispatchQueuedEvents() {
         while (!eventQueue.isEmpty()) {
             GameEvent event = eventQueue.poll();
             notifyClients(event);
         }
     }
-
+    // Sends the GameEvent to the listners, which is ClientHandler and BotPlayer classes
     private void notifyClients(GameEvent event) {
         for (ClientHandler client: clients) {
             client.forwardMessage(event);

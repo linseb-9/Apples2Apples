@@ -8,7 +8,11 @@ import com.linseb9.server.Server;
 
 import java.util.*;
 
-
+/**
+ * The Apples2Apples class is the entry point for the whole game and it needs to be
+ * started before the client. It is responsible to take user input of how many players
+ * and bots that are joining. It creates the Game object and Server object.
+ */
 public class Apples2Apples {
     private static final int MAX_TRIES = 5;
     private static final int MAX_PLAYERS = 8;

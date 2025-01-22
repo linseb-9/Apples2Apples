@@ -13,6 +13,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.EventObject;
 
+/**
+ * The ClientHandler class is responsible for the clients communication on
+ * the server side. When a player joins the server a ClientHandler is created
+ * in a new thread. It forwards GameActions from the client to the GameActionDispatcher.
+ * At initialization, it also creates a HumanPlayer for the game.
+ */
 public class ClientHandler implements Runnable {
     private final GameActionDispatcher gameActionDispatcher;
     private final Socket clientSocket;
@@ -33,7 +39,7 @@ public class ClientHandler implements Runnable {
             this.dataIn = new ObjectInputStream(clientSocket.getInputStream());
         }
         catch (Exception e) {
-            System.out.println("Failed to initialize the clientHandler: " + e);
+            System.out.println("Failed to initialize the clientHandler: " + e.getMessage());
             cleanup();
         }
     }
@@ -49,7 +55,7 @@ public class ClientHandler implements Runnable {
             }
         }
         catch(Exception e) {
-            System.out.println("Something went wrong in the ClientHandler: " + e);
+            System.out.println("Something went wrong in the ClientHandler: " + e.getMessage());
             cleanup();
         }
     }
@@ -64,7 +70,7 @@ public class ClientHandler implements Runnable {
             }
         }
         catch(Exception e) {
-            System.out.println("Error while forwarding message: " + e);
+            System.out.println("Error while forwarding message: " + e.getMessage());
         }
 
     }
