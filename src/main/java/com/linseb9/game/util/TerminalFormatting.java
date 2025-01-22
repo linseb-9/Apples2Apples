@@ -1,5 +1,9 @@
 package com.linseb9.game.util;
 
+/**
+ * The TerminalFormatting class simply changes color of the text in the terminal
+ * to make the game more readable.
+ */
 public class TerminalFormatting {
     // ANSI escape codes
     public static final String RESET = "\u001B[0m";

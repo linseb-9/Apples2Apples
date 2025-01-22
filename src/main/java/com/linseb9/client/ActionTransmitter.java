@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 
+/**
+ * The ActionTransmitter class is responsible for validating user input and
+ *  creating and transmitting GameActions from the client to the server.
+ */
 public class ActionTransmitter {
     private final ObjectOutputStream output;
     private final BufferedReader userInput;

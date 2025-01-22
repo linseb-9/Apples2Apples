@@ -6,6 +6,11 @@ import com.linseb9.game.players.Player;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * The GameMechanics class contain the most basic methods for the game and it the
+ * would be used even if custom rules were implemented. Ex shuffleDeck and dealCards
+ * which always will be needed.
+ */
 public class GameMechanics {
 
     public GameMechanics( ) {

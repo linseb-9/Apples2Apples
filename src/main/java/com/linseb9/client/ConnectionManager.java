@@ -5,6 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * The ConnectionManager is responsible for the connection from the Client side to the server.
+ */
 public class ConnectionManager {
     private final Socket socket;
     private  ObjectInputStream input = null;

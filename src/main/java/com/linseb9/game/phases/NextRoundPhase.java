@@ -8,7 +8,11 @@ import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.players.Player;
 
 import java.util.ArrayList;
-
+/**
+ * The different phases does exactly as their names suggest. The handle method
+ * is where the logic is handled and each phase has its own implementation.
+ * The method nextPhase is used by the game to move to a new phase.
+ */
 public class NextRoundPhase implements Phase{
     private String gameMessage = "Moving to next round";
     private Boolean phaseComplete;

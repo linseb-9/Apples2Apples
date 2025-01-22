@@ -5,6 +5,10 @@ import com.linseb9.game.events.GameEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+/**
+ * The EventReceiver is responsible for receiving events from the game and displaying them for the
+ * player on the client side.
+ */
 public class EventReceiver implements Runnable {
     private ObjectInputStream input;
     private boolean running;

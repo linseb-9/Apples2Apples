@@ -5,6 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * The CardBuilder class is used to read from a file and create the cards in the game,
+ * the red and green apples.
+ */
 public class CardBuilder {
     private String filePathGreen = "src/main/resources/data/greenApples.txt";
     private String getFilePathGRed = "src/main/resources/data/redApples.txt";

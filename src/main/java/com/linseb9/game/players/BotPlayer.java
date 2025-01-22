@@ -14,6 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The BotPlayer class is used as a player in the game. It only responds
+ * off two types of GameEvents, when its judge and needs to pick a winning
+ * card and when it needs to play one of its own cards. It always chooses
+ * cards on random.
+ */
 public class BotPlayer extends Player implements Runnable, Serializable {
     private Game game;
     private GameActionDispatcher gameActionDispatcher;

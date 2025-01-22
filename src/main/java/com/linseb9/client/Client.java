@@ -2,6 +2,10 @@ package com.linseb9.client;
 
 import java.io.IOException;
 
+/**
+ * The Client class is the entry point for the client side of the game. It is
+ * responsible to initialize the connectionManager, EventReceiver and ActionTransmitter
+ */
 public class Client {
     private ConnectionManager connectionManager;
     private EventReceiver eventReceiver;

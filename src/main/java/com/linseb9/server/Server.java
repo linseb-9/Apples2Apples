@@ -8,7 +8,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
+/**
+ * The Server class is responsible to host the game. It is run from the Apples2Apples
+ * class at start up.
+ */
 public class Server {
     private EventDispatcher eventDispatcher;
     private GameActionDispatcher gameActionDispatcher;

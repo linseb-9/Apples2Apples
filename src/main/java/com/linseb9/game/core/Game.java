@@ -11,6 +11,11 @@ import com.linseb9.game.players.Player;
 
 import java.util.*;
 
+/**
+ * The Game class manages the core logic and state of the Apples2Apples game.
+ * It handles the game phases, player actions, and events, ensuring the game progresses
+ * according to its rules.
+ */
 public class Game {
     private int numOfPlayers;
     private int numOfBots;
@@ -24,8 +29,6 @@ public class Game {
     private List<Map.Entry<Card, Player>> submittedRedApples;
     private Rules rules;
     private GameMechanics gameMechanics;
-
-
 
 
 
@@ -48,6 +51,7 @@ public class Game {
 
     }
 
+    // This function is called from the client side when a player sends a GameAction
 
     public void performAction(Player player, GameAction action) {
         // Process the action in the current phase
@@ -66,6 +70,7 @@ public class Game {
         }
     }
 
+    // This function is sending the players GameAction to the current phase
     private void processActionInPhase(Player player, GameAction action) {
         currentPhase.handle(this, action, player);
     }
@@ -76,11 +81,12 @@ public class Game {
         enqueueEvent(event);
     }
 
+    // This handles autonomous phases, such as dealing cards where no GameAction is required to move to the next step
     private void processAutonomousPhase() {
         currentPhase.handle(this, null, null);
 
     }
-
+    // This forwards the GameEvents created in the phases to all listeners
     public void enqueueEvent(GameEvent event) {
         for (GameEventListener listener : listeners) {
             listener.onGameEvent(event);

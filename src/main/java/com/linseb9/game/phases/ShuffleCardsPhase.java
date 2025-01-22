@@ -5,7 +5,11 @@ import com.linseb9.game.core.Game;
 import com.linseb9.game.core.GameMechanics;
 import com.linseb9.game.events.GameEvent;
 import com.linseb9.game.players.Player;
-
+/**
+ * The different phases does exactly as their names suggest. The handle method
+ * is where the logic is handled and each phase has its own implementation.
+ * The method nextPhase is used by the game to move to a new phase.
+ */
 public class ShuffleCardsPhase implements Phase {
     private String gameMessage = "Shuffling cards";
     private Boolean phaseComplete = false;
